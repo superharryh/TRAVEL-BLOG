@@ -43,7 +43,7 @@ import secrets
 secrets.token_hex(16)
 
 # 2.2. Set secret key in Flask:
-app.config['SECRET_KEY'] = 'c38ee9eded377c03448667aae70b2042'
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 
 # STEP 3. CKEditor extension needs to be initialized in the usual way before it can be used:
 ckeditor = CKEditor(app)
@@ -52,7 +52,7 @@ ckeditor = CKEditor(app)
 Bootstrap(app)
 
 # STEP 5. Connect to database:
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///travel_blog.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
