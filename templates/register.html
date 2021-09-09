@@ -1,0 +1,32 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+
+
+  <div class="register_container">
+    <img class="main-img" src="{{ url_for('static', filename='img/register-image.jpg') }}" alt="China Image">
+    <h1 class="main_text"><strong>REGISTER</strong></h1>
+  </div>
+
+
+  <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto text-center">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                  <div class="{{ category }}">{{ message }}</div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          <div class="content wtff">
+            {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary btn-lg"}) }}
+          </div>
+        </div>
+      </div>
+  </div>
+
+
+{% include "footer.html" %}
+{% endblock %}

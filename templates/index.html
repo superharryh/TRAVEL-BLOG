@@ -1,0 +1,38 @@
+
+{% include "header.html" %}
+
+
+  <section id="title">
+    <div class="banner">
+      <video autoplay="autoplay" preload="auto" loop muted>
+          <source src="{{ url_for('static', filename='img/vvideo.mp4') }}" type="video/mp4">
+      </video>
+      <h1><strong>TRAVEL BLOG</strong></h1>
+    </div>
+  </section>
+
+  <section id="swiper">
+    <div class="swiper-container mySwiper">
+      <div class="swiper-wrapper">
+        {% for post in all_posts %}
+        <div class="swiper-slide">
+          <a href="{{ url_for('show_post', post_id=post.id) }}" style="text-decoration: none;">
+            <img src="{{ post.img_url }}" alt="current post image"/>
+              <h1><strong>{{post.country}}</strong></h1>
+              <h4>{{post.subtitle}}</h4>
+              <h6>Posted by {{ post.author.name }} on {{ post.date }}</h6>
+          </a>
+        </div>
+        {% endfor %}
+        <script src="{{ url_for('static', filename='swipe.js') }}"></script>
+      </div>
+
+      <div class="pls-btn-cont">
+        <a class="btn pulse-button" href="{{ url_for('add_new_post')}}">
+          <h2><strong>Add new post!</strong></h2>
+        </a>
+      </div>
+    </div>
+  </section>
+
+{% include "footer.html" %}

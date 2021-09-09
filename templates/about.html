@@ -1,0 +1,15 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+
+  <div class="about_container">
+    <img class="main-img" src="{{ url_for('static', filename='img/about-image.jpg') }}" alt="Australia Image">
+    <h1 class="main_text"><strong>About</strong></h1>
+  </div>
+  <p class="text_about col-lg-12 col-md-12">We created the travel blog to encourage as many people as possible to share their fascinating travel stories
+      and to show how beautiful and wonderful the modern world is. We hope that your stories will encourage
+      as many people as possible to travel to different parts of our vast planet!</p>
+{% include "footer.html" %}
+
+{% endblock %}

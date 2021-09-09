@@ -1,0 +1,37 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+
+  <div class="login_container">
+    <img class="main-img" src="{{ url_for('static', filename='img/new-post.jpg') }}" alt="New-York Image">
+    {% if is_edit: %}
+    <h1 class="new_post_text"><strong>EDIT POST!</strong></h1>
+    {% else %}
+    <h1 class="new_post_text"><strong>NEW POST!</strong></h1>
+    {% endif %}
+
+    <div class="content wtff">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+
+              <!-- In the template in which you want to put a CKEditor textarea, call ckeditor.load() in <head></head> or before </body>-->
+              <!--Load ckeditor-->
+              {{ ckeditor.load() }}
+
+              <!-- Configure the ckeditor to tell it which field in WTForm will need to be a CKEditor.-->
+              {{ ckeditor.config(name='body') }}
+
+              <!-- Add WTF quickform-->
+              {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary btn-lg"}) }}
+              <!-- button_map – A dictionary, mapping button field names to names such as primary, danger or success.
+              Buttons not found in the button_map will use the default type of button.-->
+
+          </div>
+        </div>
+    </div>
+  </div>
+
+{% include "footer.html" %}
+
+{% endblock %}

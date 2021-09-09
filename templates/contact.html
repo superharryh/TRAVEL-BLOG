@@ -1,0 +1,17 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+
+  <div class="contact_container">
+    <img class="main-img" src="{{ url_for('static', filename='img/contact-image.jpg') }}" alt="Canada Image">
+    <h1 class="main_text"><strong>Write me</strong></h1>
+  </div>
+
+<div class="content wtff">
+{{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary btn-lg"}) }}
+</div>
+
+{% include "footer.html" %}
+
+{% endblock %}

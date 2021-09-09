@@ -1,0 +1,123 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+
+{% include "header.html" %}
+
+  <div class="post_container ">
+      <div class="col-lg-12 col-md-12">
+    <img class="post-img" src="{{post.img_url}}" alt="current post image">
+    <h1 class="post_text"><strong>{{ post.country }}</strong></h1>
+      </div>
+  </div>
+
+  <article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+
+                <!-- Add dark/light mode: -->
+                <button onclick="toggleTheme()" class="btn btn-outline-info float-end btn-sm dl_mode">Dark/Light</button>
+                <script src="{{ url_for('static', filename='dark_mode.js') }}"></script>
+
+                <p class="sub_text"><strong>{{post.subtitle}}</strong></p>
+                <span class="posted_text">(posted by
+                <!-- Changed from post.author as post.author is now a User object.-->
+                {{post.author.name}}
+                on {{post.date}})</span>
+                <!-- NOTE: The data from the CKEditorField is saved as HTML.
+                It contains all the structure and styling of the blog post.
+                In order for this structure to be reflected when you go to the post.html page for the blog post,
+                you need to add a Jinja safe() filter.
+                This makes sure that when Jinja renders the post.html template, it doesn't treat the HTML as text.
+                To apply a Jinja filter, you need the pipe symbol "|" and this goes between the Jinja expression and Jinja filter:
+                https://jinja.palletsprojects.com/en/2.11.x/templates/#safe -->
+
+                <br>
+                <br>
+                <hr>
+
+                <div class="main_article">
+                {{post.body|safe}}
+
+                <br>
+                {% if current_user.is_authenticated %}
+                    {% if current_user.has_liked_post(post) %}
+                        <p class="likes"><a href="{{ url_for('like_action', post_id=post.id, action='unlike') }}" class="btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Unlike"><i class="fas fa-heart unlike_post"></i></a></p>
+                        <p class="likes">{{ post.likes }} like(s)</p>
+                    {% else %}
+                        <p class="likes"><a href="{{ url_for('like_action', post_id=post.id, action='like') }}" class="btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Like"><i class="fas fa-heart to_like"></i></a></p>
+                        <p class="likes">{{ post.likes }} like(s)</p>
+                    {% endif %}
+
+                {% else %}
+                    {{ post.likes }} like(s)
+                {% endif %}
+
+
+
+                <hr>
+
+                {% if current_user.id == post.author_id %}
+                <div class="edit_button">
+                    <a class="btn btn-outline-primary float-end" href="{{url_for('edit_post', post_id=post.id)}}">Edit Post</a>
+
+                    <a class="btn btn-outline-danger" href="{{url_for('delete_post', post_id=post.id)}}">Delete Post</a>
+                </div>
+                {% endif %}
+
+
+
+
+
+                <div class="wtff">
+                <!--         Comments Area          -->
+                <!-- Load the CKEditor-->
+                {{ ckeditor.load() }}
+                <!-- Configure it with the name of the form field from CommentForm-->
+                {{ ckeditor.config(name='comment_text') }}
+                <!-- Create the wtf quickform from CommentForm-->
+                {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary btn-lg"}) }}
+                </div>
+
+                <div class="col-lg-12 col-md-10 comment">
+                    {% for comment in post.comments %}
+                    <hr>
+                    <ul class="commentList">
+                        <li>
+                            <div class="commenterImage">
+                                <img class="gravatar_img" src="{{ comment.comment_author.email | gravatar }}" alt="users gravatar image"/>
+                                {% if current_user.id == comment.author_id %}
+                                <span class="sub-text">{{comment.comment_author.name}} ( {{ comment.date_and_time }} )
+                                    <a class="btn float-end" href="{{url_for('delete_comment', post_id=post.id, comment_id=comment.id)}}"><i class="fas fa-trash-alt"></i></a>
+                                {% else %}
+                                <span class="sub-text">{{comment.comment_author.name}} ( {{ comment.date_and_time }} )</span>
+                                {% endif %}
+                            </div>
+                            <div class="commentText">
+                                {{comment.text | safe}}
+                            </div>
+                        </li>
+                    </ul>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+  </article>
+
+  <div class="header">
+  <div class="progress-container">
+    <div class="progress-bar" id="myBar"></div>
+  </div>
+  <script src="{{ url_for('static', filename='scroll-indicator.js') }}"></script>
+</div>
+
+
+
+
+
+{% include "footer.html" %}
+
+{% endblock %}
