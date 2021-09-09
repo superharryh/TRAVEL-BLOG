@@ -43,7 +43,7 @@ import secrets
 secrets.token_hex(16)
 
 # 2.2. Set secret key in Flask:
-app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+app.config['SECRET_KEY'] = 'c38ee9eded377c03448667aae70b2042'
 
 # STEP 3. CKEditor extension needs to be initialized in the usual way before it can be used:
 ckeditor = CKEditor(app)
