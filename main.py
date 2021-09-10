@@ -51,8 +51,15 @@ ckeditor = CKEditor(app)
 # STEP 4. Bootstrap extension in Flask ( {% extends "bootstrap/base.html" %} )
 Bootstrap(app)
 
+
+import re
+
+database_path = os.getenv("DATABASE_URL")  # or other relevant config var
+if database_path.startswith("postgres://"):
+    database_path = database_path.replace("postgres://", "postgresql://", 1)
+
 # STEP 5. Connect to database:
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_NEW_URL", "sqlite:///travel_blog.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = database_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
